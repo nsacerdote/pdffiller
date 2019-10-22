@@ -3,9 +3,9 @@ var Iconv = require('iconv').Iconv;
 var iconv = new Iconv('UTF-8', 'UTF-16');
 
 function convertString(string) {
-  string = string.replace('(', '[');
-  string = string.replace(')', ']');
-  string = string.replace('\\', '');
+  string = string.replace(/\\/g, '');
+  string = string.replace(/\)/g, ']');
+  string = string.replace(/\(/g, '[');
   return iconv.convert(string);
 }
 
