@@ -41,6 +41,14 @@ describe('pdfFiller Tests', function(){
             });
         });
 
+        it('should not throw an error when creating test_complete1.pdf from test.pdf with data that contains null', function(done) {
+            this.timeout(15000);
+            pdfFiller.fillForm( source2PDF, dest1PDF, {"first_name" : null}, function(err) {
+                should.not.exist(err);
+                done();
+            });
+        });
+
         it('should create an completely filled PDF that is read-only', function(done) {
             this.timeout(15000);
             pdfFiller.fillFormWithFlatten( source2PDF, dest2PDF, _data, true, function(err) {

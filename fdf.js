@@ -2,11 +2,15 @@ var fs = require('fs');
 var Iconv = require('iconv').Iconv;
 var iconv = new Iconv('UTF-8', 'UTF-16');
 
-function convertString(string) {
-  string = string.replace(/\\/g, '');
-  string = string.replace(/\)/g, ']');
-  string = string.replace(/\(/g, '[');
-  return iconv.convert(string);
+function toBuffer(value) {
+  if (!value) {
+    return new Buffer("");
+  }
+  value = value.toString();
+  value = value.replace(/\\/g, '');
+  value = value.replace(/\)/g, ']');
+  value = value.replace(/\(/g, '[');
+  return iconv.convert(value);
 }
 
 exports.createFdf = function(data, fileName) {
@@ -43,10 +47,10 @@ exports.createFdf = function(data, fileName) {
 
     body = Buffer.concat([ body, new Buffer("<<\n") ]);
     body = Buffer.concat([ body, new Buffer("/T (") ]);
-    body = Buffer.concat([ body, convertString(name.toString()) ]);
+    body = Buffer.concat([ body, toBuffer(name) ]);
     body = Buffer.concat([ body, new Buffer(")\n") ]);
     body = Buffer.concat([ body, new Buffer("/V (") ]);
-    body = Buffer.concat([ body, convertString(value.toString()) ]);
+    body = Buffer.concat([ body, toBuffer(value) ]);
     body = Buffer.concat([ body, new Buffer(")\n") ]);
     body = Buffer.concat([ body, new Buffer(">>\n") ]);
   }
